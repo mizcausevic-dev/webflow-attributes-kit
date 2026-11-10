@@ -7,7 +7,13 @@
 
 **Live demo: https://mizcausevic-dev.github.io/webflow-attributes-kit/**. It runs the production bundle on Webflow-style markup.
 
+[![Webflow Attributes Kit](docs/social-card.png)](https://mizcausevic-dev.github.io/webflow-attributes-kit/)
+
 One script tag that lets Webflow designers add common features **with custom attributes in the Designer**, no developer ticket needed: CMS list filtering and search, first-touch UTM capture into form submissions, accessible form validation, reading time, and copy-to-clipboard buttons.
+
+## See it in action
+
+![Recording of the live demo](docs/demo.gif)
 
 ## Install
 

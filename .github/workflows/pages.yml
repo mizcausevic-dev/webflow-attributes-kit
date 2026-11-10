@@ -28,7 +28,7 @@ jobs:
       - name: Stage site
         run: |
           mkdir -p _site
-          cp -r index.html demo.css demo.js dist _site/
+          cp -r index.html demo.css demo.js dist docs _site/
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
