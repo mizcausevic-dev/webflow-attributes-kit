@@ -13,8 +13,8 @@ One script tag that lets Webflow designers add common features **with custom att
 
 ```html
 <!-- Webflow: Site settings → Custom code → Footer code -->
-<script defer src="https://cdn.jsdelivr.net/gh/mizcausevic-dev/webflow-attributes-kit@v1.0.0/dist/wf-kit.min.js"
-        integrity="sha384-3GWkRtnlH7ttE452hlVKJGX9dDwxrf9Nv9iFE877+pTelIbJcDIxyjCop9ej3VPz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/mizcausevic-dev/webflow-attributes-kit@v1.1.0/dist/wf-kit.min.js"
+        integrity="sha384-wpEft3MXy1kl0TOH9UtmMxqHj2s6tVE3MeQLPYBZEBg4RnrgM+GWI3YCGfmN9dNy" crossorigin="anonymous"></script>
 ```
 
 ## Attribute reference
@@ -38,7 +38,7 @@ The filter state syncs to the URL (`?work-industry=Fintech&work-q=pay`), so filt
 
 | Attribute | Put it on | Effect |
 |---|---|---|
-| `wfk-utm` | Form | Captures first-touch `utm_*`, `gclid`, `fbclid`, `msclkid`, landing page and referrer into hidden fields (created if missing), so they arrive with the Webflow submission and in `form_submission` webhooks |
+| `wfk-utm` | Form | Captures first-touch (kept 90 days) `utm_*`, `gclid`, `fbclid`, `msclkid`, landing page and referrer into hidden fields (created if missing), so they arrive with the Webflow submission and in `form_submission` webhooks |
 | `wfk-validate` | Form | Inline errors using `required`, `type=email/url/tel`, `minlength`, `maxlength`, `pattern`. Sets `aria-invalid` + `aria-describedby`, focuses the first error, and blocks Webflow's submit handler until the form is valid |
 | `wfk-match="#email"` / `wfk-message="…"` | Input | Confirm-field matching / custom error text |
 
@@ -57,7 +57,7 @@ src/modules/filter.js    pure matcher + DOM binding + URL sync
 src/modules/utm.js       pure first-touch resolver + form binding
 src/modules/validate.js  pure validateValue() + accessible error wiring (capture-phase submit guard)
 src/modules/extras.js    reading time, copy
-dist/wf-kit.min.js       esbuild IIFE, ES2019 target, 8.2 KB min / 3.5 KB gzip
+dist/wf-kit.min.js       esbuild IIFE, ES2019 target, 8.3 KB min / 3.5 KB gzip
 ```
 
 Every module splits a **pure function** (unit-tested directly) from a thin **DOM binding** (tested in happy-dom against Webflow's markup conventions).

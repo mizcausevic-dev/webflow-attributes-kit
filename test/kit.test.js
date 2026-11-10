@@ -70,15 +70,19 @@ test('filter: hostile list ids and field text are handled as data', () => {
   assert.equal(w.document.querySelector('span[wfk-count]').textContent, '1');
 });
 
-test('UTM: first touch wins, values are sanitized and length-capped', () => {
+test('UTM: first touch wins for 90 days, values are sanitized and length-capped', () => {
   const first = resolveTouch({ search: '?utm_source=google&utm_campaign=<script>x' + 'a'.repeat(300), href: 'https://s.io/p?utm_source=google#top', referrer: 'https://www.google.com/', stored: null });
   assert.equal(first.isNew, true);
   assert.equal(first.touch.utm_source, 'google');
   assert.ok(!first.touch.utm_campaign.includes('<'));
   assert.equal(first.touch.utm_campaign.length, 200);
   assert.equal(first.touch.landing_page, 'https://s.io/p?utm_source=google');
-  const later = resolveTouch({ search: '?utm_source=bing', href: 'x', referrer: '', stored: first.touch });
-  assert.equal(later.touch.utm_source, 'google');
+  const NOW = 1_762_810_000_000;
+  const later = resolveTouch({ search: '?utm_source=bing', href: 'x', referrer: '', stored: { touch: first.touch, at: NOW - 5 * 864e5 }, now: NOW });
+  assert.equal(later.touch.utm_source, 'google', 'first touch wins within the window');
+  const expired = resolveTouch({ search: '?utm_source=bing', href: 'x', referrer: '', stored: { touch: first.touch, at: NOW - 91 * 864e5 }, now: NOW });
+  assert.equal(expired.touch.utm_source, 'bing', 'stale attribution (90+ days) is replaced');
+  assert.equal(resolveTouch({ search: '', href: 'x', referrer: '', stored: { utm_source: 'legacy-shape' }, now: NOW }).isNew, true, 'malformed storage is ignored');
   assert.ok(PARAMS.includes('gclid'));
 });
 

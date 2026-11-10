@@ -6,14 +6,16 @@
 export const PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid', 'msclkid'];
 const KEY = 'wfk:first-touch';
 const MAX = 200;
+export const TTL_DAYS = 90; // a first touch older than this is stale attribution; start a new one
 
 const clean = (v) => String(v ?? '').replace(/[\u0000-\u001f<>]/g, '').slice(0, MAX);
 
 /** Pure: decide attribution from the current URL, referrer and any stored first touch. */
-export function resolveTouch({ search, href, referrer, stored }) {
+export function resolveTouch({ search, href, referrer, stored, now = Date.now(), ttlDays = TTL_DAYS }) {
   const p = new URLSearchParams(search);
   const fromUrl = Object.fromEntries(PARAMS.filter((k) => p.get(k)).map((k) => [k, clean(p.get(k))]));
-  if (stored && Object.keys(stored).length) return { touch: stored, isNew: false };
+  const fresh = stored?.touch && Number.isFinite(stored.at) && now - stored.at < ttlDays * 864e5;
+  if (fresh) return { touch: stored.touch, isNew: false };
   const touch = { ...fromUrl, landing_page: clean(String(href).split('#')[0]), referrer: clean(referrer) };
   return { touch, isNew: true };
 }
@@ -29,7 +31,7 @@ export function initUtm(root = document, win = typeof window !== 'undefined' ? w
   let stored = null;
   try { stored = JSON.parse(store?.getItem(KEY) ?? 'null'); } catch { stored = null; }
   const { touch, isNew } = resolveTouch({ search: win.location.search, href: win.location.href, referrer: root.referrer ?? '', stored });
-  if (isNew && store) { try { store.setItem(KEY, JSON.stringify(touch)); } catch { /* quota or privacy mode */ } }
+  if (isNew && store) { try { store.setItem(KEY, JSON.stringify({ touch, at: Date.now() })); } catch { /* quota or privacy mode */ } }
   for (const form of forms) {
     for (const [name, value] of Object.entries(touch)) {
       if (!value) continue;

@@ -4,7 +4,7 @@ import { initUtm } from './modules/utm.js';
 import { initValidate } from './modules/validate.js';
 import { initReadTime, initCopy } from './modules/extras.js';
 
-export const VERSION = '1.0.0';
+export const VERSION = '1.1.0';
 
 export function init(root = document) {
   const report = {};
