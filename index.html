@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Webflow Attributes Kit: CMS filtering, UTM capture and form validation with attributes</title>
+  <meta name="description" content="One script tag adds CMS list filtering and search, first-touch UTM capture into forms, accessible form validation, reading time and copy buttons to any Webflow site. Configured with custom attributes in the Designer.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230b0c10%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%235b8cff%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="./"><span class="dot" aria-hidden="true"></span>Webflow Attributes Kit</a>
+  <nav><a href="#install">Install</a><a href="https://github.com/mizcausevic-dev/webflow-attributes-kit">GitHub</a></nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Webflow custom code · No-code friendly</div>
+    <h1>Add features in the Designer with custom attributes.</h1>
+    <p>Paste one 3.5 KB (gzipped) script into Site settings. Then designers add behavior by setting custom attributes on elements in Webflow: CMS filtering and search with shareable URLs, first-touch UTM capture into form submissions, accessible inline validation, reading time, and copy buttons. The examples below use Webflow's own class names (<code>w-dyn-list</code>, <code>w-dyn-item</code>, <code>w-form</code>) and the actual production bundle.</p>
+  </section>
+
+  <section class="site-preview" aria-labelledby="work-h">
+    <h2 id="work-h">Case studies <small class="hint">(a Webflow Collection List)</small></h2>
+    <div class="filters">
+      <label class="sr-only" for="q">Search case studies</label>
+      <input id="q" type="search" placeholder="Search…" wfk-search="work" wfk-search-fields="title,client">
+      <button class="chip" wfk-filter="work" wfk-filter-field="industry" wfk-filter-value="Fintech">Fintech</button>
+      <button class="chip" wfk-filter="work" wfk-filter-field="industry" wfk-filter-value="SaaS">SaaS</button>
+      <button class="chip" wfk-filter="work" wfk-filter-field="industry" wfk-filter-value="Healthcare">Healthcare</button>
+      <label class="sr-only" for="yr">Year</label>
+      <select id="yr" wfk-filter="work" wfk-filter-field="year"><option value="">Any year</option><option>2025</option><option>2026</option></select>
+      <button class="chip" wfk-reset="work">Reset</button>
+      <span class="count-line"><span wfk-count="work">0</span> results</span>
+    </div>
+    <div class="sr-only" wfk-status="work" aria-live="polite"></div>
+    <div class="w-dyn-list" wfk-list="work">
+      <div class="w-dyn-items" role="list">
+        <div class="w-dyn-item" role="listitem"><h3 wfk-field="title">Checkout Redesign</h3><p wfk-field="client">Northwind Pay</p><span class="tag" wfk-field="industry">Fintech</span><span class="tag" wfk-field="year">2026</span></div>
+        <div class="w-dyn-item" role="listitem"><h3 wfk-field="title">Patient Portal Migration</h3><p wfk-field="client">Harbor Health</p><span class="tag" wfk-field="industry">Healthcare</span><span class="tag" wfk-field="year">2026</span></div>
+        <div class="w-dyn-item" role="listitem"><h3 wfk-field="title">Pricing Page Rebuild</h3><p wfk-field="client">Acme Analytics</p><span class="tag" wfk-field="industry">SaaS</span><span class="tag" wfk-field="year">2025</span></div>
+        <div class="w-dyn-item" role="listitem"><h3 wfk-field="title">Onboarding Flow</h3><p wfk-field="client">Ledgerly</p><span class="tag" wfk-field="industry">Fintech</span><span class="tag" wfk-field="year">2025</span></div>
+        <div class="w-dyn-item" role="listitem"><h3 wfk-field="title">Docs Hub</h3><p wfk-field="client">Initech</p><span class="tag" wfk-field="industry">SaaS</span><span class="tag" wfk-field="year">2026</span></div>
+        <div class="w-dyn-item" role="listitem"><h3 wfk-field="title">Clinic Booking</h3><p wfk-field="client">Café Médical</p><span class="tag" wfk-field="industry">Healthcare</span><span class="tag" wfk-field="year">2025</span></div>
+      </div>
+    </div>
+    <div class="empty-state" wfk-empty="work" hidden>No case studies match. Try another filter.</div>
+  </section>
+
+  <section class="site-preview" aria-labelledby="contact-h">
+    <h2 id="contact-h">Contact form <small class="hint">(<code>wfk-validate</code> + <code>wfk-utm</code>; <a href="?utm_source=linkedin&amp;utm_medium=paid&amp;utm_campaign=q4-launch#contact-h">reload with UTM parameters</a>)</small></h2>
+    <div class="w-form">
+      <form id="contact" wfk-validate wfk-utm>
+        <label for="name">Full name *</label><input id="name" name="name" required minlength="2" autocomplete="name">
+        <label for="email">Work email *</label><input id="email" name="email" type="email" required autocomplete="email">
+        <label for="email2">Confirm email *</label><input id="email2" name="email_confirm" type="email" required wfk-match="#email">
+        <label for="site">Company website</label><input id="site" name="website_url" type="url" placeholder="https://">
+        <label for="msg">How can we help? *</label><textarea id="msg" name="message" required minlength="20" rows="3"></textarea>
+        <input type="submit" value="Send message" class="btn">
+      </form>
+      <div class="w-form-done" hidden><strong>Thanks! Webflow would now record this submission, including these hidden fields:</strong><pre class="code" id="captured"></pre></div>
+    </div>
+  </section>
+
+  <section class="site-preview">
+    <h2>Blog post <small class="hint"><span wfk-readtime="#post-body"></span></small></h2>
+    <div id="post-body" class="hint">Webflow's CMS is great for marketing teams. Developers usually step in when the site needs things the Designer doesn't offer natively: filtering a Collection List, keeping campaign attribution through a form, or stopping bad leads before they hit the CRM. This kit covers those cases with attributes that designers can set themselves, so developers stay out of the critical path. Each module has unit tests, fails safely, and works alongside Webflow's own scripts. The point isn't clever code. It's fewer tickets.</div>
+    <p class="mt-8">Launch offer: <span id="coupon" class="coupon">WEBFLOW25</span> <button type="button" class="chip" wfk-copy="#coupon">Copy code</button></p>
+  </section>
+
+  <section class="card mt-16" id="install">
+    <h2>Install on a Webflow site</h2>
+    <pre class="code">&lt;!-- Site settings → Custom code → Footer code --&gt;
+&lt;script defer src="https://cdn.jsdelivr.net/gh/mizcausevic-dev/webflow-attributes-kit@v1.0.0/dist/wf-kit.min.js"
+        integrity="sha384-3GWkRtnlH7ttE452hlVKJGX9dDwxrf9Nv9iFE877+pTelIbJcDIxyjCop9ej3VPz" crossorigin="anonymous"&gt;&lt;/script&gt;</pre>
+    <p class="hint">Then select an element in the Designer → Settings → Custom attributes, and add for example <code>wfk-list = work</code> on the Collection List and <code>wfk-field = industry</code> on a text element bound to the Industry field. The README has the full attribute reference.</p>
+  </section>
+</main>
+
+<footer class="site"><div class="wrap">
+  <span>Built by <a href="https://github.com/mizcausevic-dev">Miz Causevic</a> · Kinetic Gain LLC</span>
+  <span>Independent project, not affiliated with or endorsed by Webflow, Inc. · MIT licensed</span>
+</div></footer>
+<script src="demo.js"></script>
+<script src="dist/wf-kit.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "webflow-attributes-kit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Attribute-driven custom code for Webflow sites: CMS filtering, UTM capture, form validation.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "esbuild src/wf-kit.js --bundle --minify --format=iife --target=es2019 --outfile=dist/wf-kit.min.js --legal-comments=none",
+    "test": "node --test",
+    "start": "python3 -m http.server 8080"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "happy-dom": "^21.0.4"
+  }
+}
